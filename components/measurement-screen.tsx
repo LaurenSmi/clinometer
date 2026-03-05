@@ -4,8 +4,17 @@ import { AccelerometerComponent } from "@/components/accelerometer-component";
 import { Camera } from "@/components/camera";
 import { ThemedText } from "@/components/themed-text";
 import { ThemedView } from "@/components/themed-view";
+import { NavButton } from "./nav-button";
+import { useState } from "react";
 
-export default function MeasurementScreen({ text }: { text: string }) {
+export default function MeasurementScreen({
+  text,
+  onCapture,
+}: {
+  text: string;
+  onCapture: (accelerometerData: { x: number; y: number; z: number }) => void;
+}) {
+  const [currentAccelerometerData, setCurrentAccelerometerData] = useState({ x: 0, y: 0, z: 0 });
   return (
     <>
       <ThemedView style={styles.textContainer}>
@@ -14,8 +23,10 @@ export default function MeasurementScreen({ text }: { text: string }) {
 
       <ThemedView style={{ aspectRatio: 1, width: "100%" }}>
         <Camera />
-        <AccelerometerComponent />
+        <AccelerometerComponent onDataChange={setCurrentAccelerometerData} />
       </ThemedView>
+
+      <NavButton onClick={() => onCapture(currentAccelerometerData)} text="Capture" />
     </>
   );
 }

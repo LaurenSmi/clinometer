@@ -2,7 +2,7 @@ import { Accelerometer } from "expo-sensors";
 import React, { useEffect, useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
 
-export function AccelerometerComponent() {
+export function AccelerometerComponent({ onDataChange }: { onDataChange?: (data: { x: number; y: number; z: number }) => void }) {
   const [data, setData] = useState({
     x: 0,
     y: 0,
@@ -17,6 +17,7 @@ export function AccelerometerComponent() {
     // Subscribe to accelerometer updates
     const subscription = Accelerometer.addListener((accelerometerData) => {
       setData(accelerometerData);
+      onDataChange?.(accelerometerData);
     });
 
     // Set update interval (optional, default is 100ms)

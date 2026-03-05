@@ -3,7 +3,7 @@ import { StyleSheet } from "react-native";
 
 interface NavButtonProps {
   onClick: () => void;
-  isDisabled: boolean;
+  isDisabled?: boolean;
   text: string;
 }
 

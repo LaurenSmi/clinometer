@@ -45,7 +45,7 @@ export default function HomeScreen() {
   const handleStartMeasuring = () => {
     if (isValidDistance) {
       setDistance(Number(distanceInput));
-      router.push("/base-measurement-screen");
+      router.push("/top-measurement-screen");
     }
   };
 
