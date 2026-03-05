@@ -30,7 +30,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   buttonDisabled: {
-    backgroundColor: "#475e52",
+    backgroundColor: "#3b6d53",
     opacity: 0.6,
   },
 });

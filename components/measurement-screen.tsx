@@ -5,12 +5,7 @@ import { Camera } from "@/components/camera";
 import { ThemedText } from "@/components/themed-text";
 import { ThemedView } from "@/components/themed-view";
 
-export default function MeasurementScreen(text: string) {
-  {
-    /* Hold your phone vertically so the camera is eye level and press{" "}
-          <ThemedText type="defaultSemiBold">Capture</ThemedText>. */
-  }
-
+export default function MeasurementScreen({ text }: { text: string }) {
   return (
     <>
       <ThemedView style={styles.textContainer}>

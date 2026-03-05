@@ -12,35 +12,41 @@ import { NavButton } from "@/components/nav-button";
 import ParallaxScrollView from "@/components/parallax-scroll-view";
 import { ThemedText } from "@/components/themed-text";
 import { ThemedView } from "@/components/themed-view";
-import { NavigationProp, useNavigation } from "@react-navigation/native";
+import { units } from "@/constants/consts";
+import { useRouter } from "expo-router";
 import { useContext, useState } from "react";
 import SelectDropdown from "react-native-select-dropdown";
+import DistanceContext from "./distanceContext";
 import UnitContext from "./unitContext";
-
-type RootStackParamList = {
-  "measurement-screen": undefined;
-};
-
-const units = [{ title: "m" }, { title: "ft" }];
 
 export default function HomeScreen() {
   const [unit, setUnit] = useContext(UnitContext)!;
-  const colorScheme = useColorScheme();
-  const navigation = useNavigation<NavigationProp<RootStackParamList>>();
+  const [, setDistance] = useContext(DistanceContext)!;
 
-  const inputBackgroundColor = colorScheme === "dark" ? "#1D3D47" : "#E9ECEF";
+  const colorScheme = useColorScheme();
+  const router = useRouter();
+
+  const inputBackgroundColor = colorScheme === "dark" ? "#133b28" : "#E9ECEF";
   const inputTextColor = colorScheme === "dark" ? "#E9ECEF" : "#151E26";
-  const borderColor = colorScheme === "dark" ? "#2D4D57" : "#ccc";
+  const borderColor = colorScheme === "dark" ? "#133b28" : "#ccc";
   const [isValidDistance, setIsValidDistance] = useState(false);
+  const [distanceInput, setDistanceInput] = useState("");
 
   const handleDistanceChange = (text: string) => {
-    if (!isNaN(Number(text)) && Number(text) < 0) {
+    setDistanceInput(text);
+    if (isNaN(Number(text)) || Number(text) <= 0 || text === "") {
       console.warn("Please enter a valid number for distance.");
       setIsValidDistance(false);
       return;
     }
     setIsValidDistance(true);
-    console.log("Distance entered:", text);
+  };
+
+  const handleStartMeasuring = () => {
+    if (isValidDistance) {
+      setDistance(Number(distanceInput));
+      router.push("/base-measurement-screen");
+    }
   };
 
   return (
@@ -71,6 +77,7 @@ export default function HomeScreen() {
               borderColor: borderColor,
             },
           ]}
+          value={distanceInput ? distanceInput.toString() : ""}
           onChange={(e) => handleDistanceChange(e.nativeEvent.text)}
         />
         <SelectDropdown
@@ -124,11 +131,7 @@ export default function HomeScreen() {
         />
       </ThemedView>
       <NavButton
-        onClick={() => {
-          if (isValidDistance) {
-            navigation.navigate("measurement-screen");
-          }
-        }}
+        onClick={handleStartMeasuring}
         isDisabled={!isValidDistance}
         text="Start Measuring"
       />
@@ -155,6 +158,7 @@ const styles = StyleSheet.create({
     borderColor: "#ccc",
     padding: 12,
     borderRadius: 8,
+    width: 150,
   },
   dropdownButtonStyle: {
     width: 100,

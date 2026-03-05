@@ -24,8 +24,8 @@ export default function RootLayout() {
           <Stack>
             <Stack.Screen name="index" options={{ title: "" }} />
             <Stack.Screen
-              name="measurement-screen"
-              options={{ title: "Measurement" }}
+              name="base-measurement-screen"
+              options={{ title: "Eye-Level Measurement" }}
             />
             <Stack.Screen
               name="modal"
