@@ -7,22 +7,28 @@ import { ThemedText } from "@/components/themed-text";
 import { ThemedView } from "@/components/themed-view";
 import { calcHeight } from "@/hooks/calc-height";
 import { useRouter } from "expo-router";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import AngleContext from "./angleContext";
 import DistanceContext from "./distanceContext";
+import StepContext from "./stepContext";
 import UnitContext from "./unitContext";
 
 export default function HomeScreen() {
   const [distance] = useContext(DistanceContext)!;
   const [units] = useContext(UnitContext)!;
   const [{ angleToTop, angleToBottom }] = useContext(AngleContext)!;
+  const [, setStep] = useContext(StepContext)!;
 
   const height = calcHeight(angleToTop, angleToBottom, distance);
 
   const router = useRouter();
 
+  useEffect(() => {
+    setStep(4);
+  }, []);
+
   const handleDone = () => {
-    router.push("/");
+    router.replace("/");
   };
 
   return (

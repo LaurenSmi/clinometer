@@ -14,17 +14,23 @@ import { ThemedText } from "@/components/themed-text";
 import { ThemedView } from "@/components/themed-view";
 import { units } from "@/constants/consts";
 import { useRouter } from "expo-router";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import SelectDropdown from "react-native-select-dropdown";
 import DistanceContext from "./distanceContext";
+import StepContext from "./stepContext";
 import UnitContext from "./unitContext";
 
 export default function HomeScreen() {
   const [unit, setUnit] = useContext(UnitContext)!;
   const [, setDistance] = useContext(DistanceContext)!;
+  const [, setStep] = useContext(StepContext)!;
 
   const colorScheme = useColorScheme();
   const router = useRouter();
+
+  useEffect(() => {
+    setStep(1);
+  }, []);
 
   const inputBackgroundColor = colorScheme === "dark" ? "#133b28" : "#E9ECEF";
   const inputTextColor = colorScheme === "dark" ? "#E9ECEF" : "#151E26";

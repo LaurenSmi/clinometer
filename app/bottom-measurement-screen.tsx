@@ -1,12 +1,18 @@
 import MeasurementScreen from "@/components/measurement-screen";
 import { accelerometerToAngle } from "@/hooks/calc-height";
 import { useRouter } from "expo-router";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import AngleContext from "./angleContext";
+import StepContext from "./stepContext";
 
 export default function BottomMeasurementScreen() {
   const [, setAngles] = useContext(AngleContext)!;
+  const [, setStep] = useContext(StepContext)!;
   const router = useRouter();
+
+  useEffect(() => {
+    setStep(3);
+  }, []);
 
   const handleCapture = (accelerometerData: {
     x: number;
@@ -19,9 +25,11 @@ export default function BottomMeasurementScreen() {
   };
 
   return (
-    <MeasurementScreen
-      text="Tilt your phone to point the cross hair to the base of the tree and press Capture."
-      onCapture={handleCapture}
-    />
+    <>
+      <MeasurementScreen
+        text="Tilt your phone to point the cross hair to the base of the tree and press Capture."
+        onCapture={handleCapture}
+      />
+    </>
   );
 }
