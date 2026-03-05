@@ -1,9 +1,9 @@
-import { CameraType, CameraView, useCameraPermissions } from 'expo-camera';
-import { useState } from 'react';
-import { Button, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { CameraType, CameraView, useCameraPermissions } from "expo-camera";
+import { useState } from "react";
+import { Button, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
 export function Camera() {
-  const [facing, setFacing] = useState<CameraType>('back');
+  const [facing, setFacing] = useState<CameraType>("back");
   const [permission, requestPermission] = useCameraPermissions();
 
   if (!permission) {
@@ -15,19 +15,25 @@ export function Camera() {
     // Camera permissions are not granted yet.
     return (
       <View style={styles.container}>
-        <Text style={styles.message}>We need your permission to show the camera</Text>
+        <Text style={styles.message}>
+          We need your permission to show the camera
+        </Text>
         <Button onPress={requestPermission} title="grant permission" />
       </View>
     );
   }
 
   function toggleCameraFacing() {
-    setFacing(current => (current === 'back' ? 'front' : 'back'));
+    setFacing((current) => (current === "back" ? "front" : "back"));
   }
 
   return (
     <View style={styles.container}>
       <CameraView style={styles.camera} facing={facing} />
+      <View style={styles.crosshairContainer}>
+        <View style={styles.crosshairVertical} />
+        <View style={styles.crosshairHorizontal} />
+      </View>
       <View style={styles.buttonContainer}>
         <TouchableOpacity style={styles.button} onPress={toggleCameraFacing}>
           <Text style={styles.text}>Flip Camera</Text>
@@ -40,30 +46,51 @@ export function Camera() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
+    justifyContent: "center",
   },
   message: {
-    textAlign: 'center',
+    textAlign: "center",
     paddingBottom: 10,
   },
   camera: {
     flex: 1,
   },
+  crosshairContainer: {
+    position: "absolute",
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  crosshairVertical: {
+    position: "absolute",
+    width: 2,
+    height: 40,
+    backgroundColor: "white",
+  },
+  crosshairHorizontal: {
+    position: "absolute",
+    height: 2,
+    width: 40,
+    backgroundColor: "white",
+  },
   buttonContainer: {
-    position: 'absolute',
+    position: "absolute",
     bottom: 64,
-    flexDirection: 'row',
-    backgroundColor: 'transparent',
-    width: '100%',
+    flexDirection: "row",
+    backgroundColor: "transparent",
+    width: "100%",
     paddingHorizontal: 64,
   },
   button: {
     flex: 1,
-    alignItems: 'center',
+    alignItems: "center",
   },
   text: {
     fontSize: 24,
-    fontWeight: 'bold',
-    color: 'white',
+    fontWeight: "bold",
+    color: "white",
   },
 });

@@ -1,6 +1,6 @@
-import { Accelerometer } from 'expo-sensors';
-import React, { useEffect, useState } from 'react';
-import { Text, View } from 'react-native';
+import { Accelerometer } from "expo-sensors";
+import React, { useEffect, useState } from "react";
+import { StyleSheet, Text, View } from "react-native";
 
 export function AccelerometerComponent() {
   const [data, setData] = useState({
@@ -10,8 +10,12 @@ export function AccelerometerComponent() {
   });
 
   useEffect(() => {
+    if (!Accelerometer.isAvailableAsync()) {
+      console.warn("Accelerometer is not available on this device");
+      return;
+    }
     // Subscribe to accelerometer updates
-    const subscription = Accelerometer.addListener(accelerometerData => {
+    const subscription = Accelerometer.addListener((accelerometerData) => {
       setData(accelerometerData);
     });
 
@@ -24,10 +28,19 @@ export function AccelerometerComponent() {
 
   return (
     <View>
-      <Text>Accelerometer Data:</Text>
-      <Text>X: {data.x.toFixed(2)}</Text>
-      <Text>Y: {data.y.toFixed(2)}</Text>
-      <Text>Z: {data.z.toFixed(2)}</Text>
+      <Text style={styles.text}>Accelerometer Data:</Text>
+      <Text style={styles.text}>X: {data.x.toFixed(2)}</Text>
+      <Text style={styles.text}>Y: {data.y.toFixed(2)}</Text>
+      <Text style={styles.text}>Z: {data.z.toFixed(2)}</Text>
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  text: {
+    fontSize: 16,
+    marginVertical: 8,
+    fontWeight: "bold",
+    color: "white",
+  },
+});
