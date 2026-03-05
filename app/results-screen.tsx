@@ -38,20 +38,23 @@ export default function HomeScreen() {
       <ThemedView style={styles.titleContainer}>
         <ThemedText type="title">Your Results</ThemedText>
       </ThemedView>
-      <ThemedText>Angle to the top of tree: </ThemedText>
-      <ThemedText>Angle to the bottom of tree: </ThemedText>
+      <ThemedText>
+        Angle to the top of tree: {angleToTop.toFixed(2)}°
+      </ThemedText>
+      <ThemedText>
+        Angle to the bottom of tree: {angleToBottom.toFixed(2)}°
+      </ThemedText>
       <ThemedText>
         Distance to tree: {distance.toFixed(2)} {units}
       </ThemedText>
 
       <ThemedText>
-        Height = {distance} * (tan({angleToTop} + tan({angleToBottom * -1}))){" "}
-        {units}{" "}
+        Height = {distance.toFixed(2)} * (tan({angleToTop.toFixed(2)}) + tan(
+        {(angleToBottom * -1).toFixed(2)})) {units}
       </ThemedText>
 
-      <ThemedText type="title">Calculated Height: </ThemedText>
       <ThemedText type="title">
-        {height.toFixed(2)} {units}
+        Calculated Height: {height.toFixed(2)} {units}{" "}
       </ThemedText>
 
       <NavButton onClick={handleDone} text="Done" />
