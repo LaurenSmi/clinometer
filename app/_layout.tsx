@@ -6,13 +6,13 @@ import {
 import { Stack } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import "react-native-reanimated";
+import StepContext from "./contexts/stepContext";
+import UnitContext from "./contexts/unitContext";
 import DistanceContext from "./distanceContext";
-import StepContext from "./stepContext";
-import UnitContext from "./unitContext";
 
 import { useColorScheme } from "@/hooks/use-color-scheme";
 import { useState } from "react";
-import AngleContext from "./angleContext";
+import AngleContext from "./contexts/angleContext";
 
 export default function RootLayout() {
   const colorScheme = useColorScheme();
@@ -29,18 +29,18 @@ export default function RootLayout() {
               value={useState({ angleToBottom: 0, angleToTop: 0 })}
             >
               <Stack>
-                <Stack.Screen name="index" options={{ title: "" }} />
+                <Stack.Screen name="index" options={{ headerShown: false }} />
                 <Stack.Screen
                   name="top-measurement-screen"
-                  options={{ title: "Top Measurement" }}
+                  options={{ headerShown: false }}
                 />
                 <Stack.Screen
                   name="bottom-measurement-screen"
-                  options={{ title: "Bottom Measurement" }}
+                  options={{ headerShown: false }}
                 />
                 <Stack.Screen
                   name="results-screen"
-                  options={{ title: "Results" }}
+                  options={{ headerShown: false }}
                 />
               </Stack>
               <StatusBar style="auto" />

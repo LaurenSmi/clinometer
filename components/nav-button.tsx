@@ -22,15 +22,16 @@ export function NavButton({ onClick, isDisabled, text }: NavButtonProps) {
 
 const styles = StyleSheet.create({
   button: {
-    backgroundColor: "#074025",
+    backgroundColor: "#88A974",
     paddingVertical: 12,
     paddingHorizontal: 20,
-    borderRadius: 8,
+    borderRadius: 13,
     marginTop: 20,
     alignItems: "center",
+    justifyContent: "center",
+    width: 150,
   },
   buttonDisabled: {
-    backgroundColor: "#3b6d53",
     opacity: 0.6,
   },
 });

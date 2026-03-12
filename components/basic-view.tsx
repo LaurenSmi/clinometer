@@ -1,21 +1,15 @@
 import type { PropsWithChildren } from "react";
 import { StyleSheet } from "react-native";
-import Animated, {
-    useAnimatedRef,
-    useScrollOffset,
-} from "react-native-reanimated";
+import Animated, { useAnimatedRef } from "react-native-reanimated";
 
 import { ThemedView } from "@/components/themed-view";
-import { useColorScheme } from "@/hooks/use-color-scheme";
 import { useThemeColor } from "@/hooks/use-theme-color";
 
 const HEADER_HEIGHT = 250;
 
 export default function BasicView({ children }: PropsWithChildren) {
   const backgroundColor = useThemeColor({}, "background");
-  const colorScheme = useColorScheme() ?? "light";
   const scrollRef = useAnimatedRef<Animated.ScrollView>();
-  const scrollOffset = useScrollOffset(scrollRef);
 
   return (
     <Animated.ScrollView

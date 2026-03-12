@@ -1,5 +1,4 @@
 import Icon from "@expo/vector-icons/FontAwesome";
-import { Image } from "expo-image";
 import {
   StyleSheet,
   Text,
@@ -8,17 +7,21 @@ import {
   useColorScheme,
 } from "react-native";
 
+import BasicView from "@/components/basic-view";
 import { NavButton } from "@/components/nav-button";
-import ParallaxScrollView from "@/components/parallax-scroll-view";
 import { ThemedText } from "@/components/themed-text";
 import { ThemedView } from "@/components/themed-view";
 import { units } from "@/constants/consts";
 import { useRouter } from "expo-router";
 import { useContext, useEffect, useState } from "react";
 import SelectDropdown from "react-native-select-dropdown";
+import StepContext from "./contexts/stepContext";
+import UnitContext from "./contexts/unitContext";
 import DistanceContext from "./distanceContext";
-import StepContext from "./stepContext";
-import UnitContext from "./unitContext";
+
+const inputBackgroundColor = "#FFFFFF";
+const inputTextColor = "#54753F";
+const borderColor = "#FFFFFF";
 
 export default function HomeScreen() {
   const [unit, setUnit] = useContext(UnitContext)!;
@@ -32,9 +35,6 @@ export default function HomeScreen() {
     setStep(1);
   }, []);
 
-  const inputBackgroundColor = colorScheme === "dark" ? "#133b28" : "#E9ECEF";
-  const inputTextColor = colorScheme === "dark" ? "#E9ECEF" : "#151E26";
-  const borderColor = colorScheme === "dark" ? "#133b28" : "#ccc";
   const [isValidDistance, setIsValidDistance] = useState(false);
   const [distanceInput, setDistanceInput] = useState("");
 
@@ -56,25 +56,18 @@ export default function HomeScreen() {
   };
 
   return (
-    <ParallaxScrollView
-      headerBackgroundColor={{ light: "#A1CEDC", dark: "#1D3D47" }}
-      headerImage={
-        <Image
-          source={require("@/assets/images/tree.jpg")}
-          style={styles.headerImage}
-        />
-      }
-    >
+    <BasicView>
       <ThemedView style={styles.titleContainer}>
-        <ThemedText type="title">Let's get measuring!</ThemedText>
+        <ThemedText type="title">The #1 Clinometer</ThemedText>
       </ThemedView>
+      <ThemedText type="defaultSemiBold">Let's get measuring!</ThemedText>
+
       <ThemedText>Enter your distance from the base of the tree</ThemedText>
 
       <ThemedView style={styles.titleContainer}>
         <TextInput
           keyboardType="numeric"
-          placeholder="Enter distance"
-          placeholderTextColor={colorScheme === "dark" ? "#7D8D97" : "#999"}
+          placeholder=""
           style={[
             styles.input,
             {
@@ -139,9 +132,9 @@ export default function HomeScreen() {
       <NavButton
         onClick={handleStartMeasuring}
         isDisabled={!isValidDistance}
-        text="Start Measuring"
+        text="Start"
       />
-    </ParallaxScrollView>
+    </BasicView>
   );
 }
 
@@ -161,7 +154,6 @@ const styles = StyleSheet.create({
   },
   input: {
     borderWidth: 1,
-    borderColor: "#ccc",
     padding: 12,
     borderRadius: 8,
     width: 150,
@@ -169,7 +161,7 @@ const styles = StyleSheet.create({
   dropdownButtonStyle: {
     width: 100,
     height: 50,
-    backgroundColor: "#E9ECEF",
+    backgroundColor: inputBackgroundColor,
     borderRadius: 12,
     flexDirection: "row",
     justifyContent: "center",
@@ -180,7 +172,7 @@ const styles = StyleSheet.create({
     flex: 1,
     fontSize: 18,
     fontWeight: "500",
-    color: "#151E26",
+    color: inputTextColor,
   },
   dropdownButtonArrowStyle: {
     fontSize: 20,
@@ -190,7 +182,7 @@ const styles = StyleSheet.create({
     marginRight: 8,
   },
   dropdownMenuStyle: {
-    backgroundColor: "#E9ECEF",
+    backgroundColor: inputBackgroundColor,
     borderRadius: 8,
   },
   dropdownItemStyle: {

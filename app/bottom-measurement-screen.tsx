@@ -2,8 +2,8 @@ import MeasurementScreen from "@/components/measurement-screen";
 import { accelerometerToAngle } from "@/hooks/calc-height";
 import { useRouter } from "expo-router";
 import { useContext, useEffect } from "react";
-import AngleContext from "./angleContext";
-import StepContext from "./stepContext";
+import AngleContext from "./contexts/angleContext";
+import StepContext from "./contexts/stepContext";
 
 export default function BottomMeasurementScreen() {
   const [, setAngles] = useContext(AngleContext)!;
