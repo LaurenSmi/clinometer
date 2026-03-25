@@ -1,16 +1,9 @@
 import Icon from "@expo/vector-icons/FontAwesome";
-import {
-  StyleSheet,
-  Text,
-  TextInput,
-  View,
-  useColorScheme,
-} from "react-native";
+import { Dimensions, StyleSheet, Text, TextInput, View } from "react-native";
 
 import BasicView from "@/components/basic-view";
 import { NavButton } from "@/components/nav-button";
 import { ThemedText } from "@/components/themed-text";
-import { ThemedView } from "@/components/themed-view";
 import { units } from "@/constants/consts";
 import { useRouter } from "expo-router";
 import { useContext, useEffect, useState } from "react";
@@ -22,13 +15,13 @@ import DistanceContext from "./distanceContext";
 const inputBackgroundColor = "#FFFFFF";
 const inputTextColor = "#54753F";
 const borderColor = "#FFFFFF";
+const screenHeight = Dimensions.get("window").height;
 
 export default function HomeScreen() {
   const [unit, setUnit] = useContext(UnitContext)!;
   const [, setDistance] = useContext(DistanceContext)!;
   const [, setStep] = useContext(StepContext)!;
 
-  const colorScheme = useColorScheme();
   const router = useRouter();
 
   useEffect(() => {
@@ -41,7 +34,6 @@ export default function HomeScreen() {
   const handleDistanceChange = (text: string) => {
     setDistanceInput(text);
     if (isNaN(Number(text)) || Number(text) <= 0 || text === "") {
-      console.warn("Please enter a valid number for distance.");
       setIsValidDistance(false);
       return;
     }
@@ -57,42 +49,54 @@ export default function HomeScreen() {
 
   return (
     <BasicView>
-      <ThemedView style={styles.titleContainer}>
-        <ThemedText type="title">The #1 Clinometer</ThemedText>
-      </ThemedView>
-      <ThemedText type="defaultSemiBold">Let's get measuring!</ThemedText>
+      <View style={styles.container}>
+        <View style={{ height: screenHeight * 0.15 }} />
 
-      <ThemedText>Enter your distance from the base of the tree</ThemedText>
+        <View style={{ gap: 12 }}>
+          <ThemedText style={{ textAlign: "center" }} type="title">
+            The #1
+          </ThemedText>
+        </View>
 
-      <ThemedView style={styles.titleContainer}>
-        <TextInput
-          keyboardType="numeric"
-          placeholder=""
-          style={[
-            styles.input,
-            {
-              backgroundColor: inputBackgroundColor,
-              color: inputTextColor,
-              borderColor: borderColor,
-            },
-          ]}
-          value={distanceInput ? distanceInput.toString() : ""}
-          onChange={(e) => handleDistanceChange(e.nativeEvent.text)}
-        />
-        <SelectDropdown
-          data={units}
-          onSelect={(selectedItem) => {
-            setUnit(selectedItem.title);
-          }}
-          dropdownOverlayColor="transparent"
-          renderButton={(selectedItem, isOpened) => {
-            return (
+        <ThemedText style={{ textAlign: "center" }} type="title">
+          Clinometer
+        </ThemedText>
+
+        {/* Medium gap between title and subtitle */}
+        <View style={{ height: 40 }} />
+
+        <ThemedText style={{ textAlign: "center" }} type="defaultSemiBold">
+          Let's get measuring!
+        </ThemedText>
+
+        <ThemedText style={{ textAlign: "center" }}>
+          Enter the distance to the base of the tree:
+        </ThemedText>
+
+        <View style={styles.rowContainer}>
+          <TextInput
+            keyboardType="numeric"
+            placeholder=""
+            style={[
+              styles.input,
+              {
+                backgroundColor: inputBackgroundColor,
+                color: inputTextColor,
+                borderColor: borderColor,
+              },
+            ]}
+            value={distanceInput ? distanceInput.toString() : ""}
+            onChange={(e) => handleDistanceChange(e.nativeEvent.text)}
+          />
+          <SelectDropdown
+            data={units}
+            onSelect={(selectedItem) => setUnit(selectedItem.title)}
+            dropdownOverlayColor="transparent"
+            renderButton={(selectedItem, isOpened) => (
               <View
                 style={[
                   styles.dropdownButtonStyle,
-                  {
-                    backgroundColor: inputBackgroundColor,
-                  },
+                  { backgroundColor: inputBackgroundColor },
                 ]}
               >
                 <Text
@@ -111,10 +115,8 @@ export default function HomeScreen() {
                   ]}
                 />
               </View>
-            );
-          }}
-          renderItem={(item, index, isSelected) => {
-            return (
+            )}
+            renderItem={(item, index, isSelected) => (
               <View
                 style={[
                   styles.dropdownItemStyle,
@@ -123,46 +125,51 @@ export default function HomeScreen() {
               >
                 <Text style={styles.dropdownItemTxtStyle}>{item.title}</Text>
               </View>
-            );
-          }}
-          showsVerticalScrollIndicator={false}
-          dropdownStyle={styles.dropdownMenuStyle}
-        />
-      </ThemedView>
-      <NavButton
-        onClick={handleStartMeasuring}
-        isDisabled={!isValidDistance}
-        text="Start"
-      />
+            )}
+            showsVerticalScrollIndicator={false}
+            dropdownStyle={styles.dropdownMenuStyle}
+          />
+        </View>
+        <View style={{ height: 40 }} />
+
+        <View style={{ alignItems: "center", width: "100%" }}>
+          <NavButton
+            onClick={handleStartMeasuring}
+            isDisabled={!isValidDistance}
+            text="Start"
+          />
+        </View>
+      </View>
     </BasicView>
   );
 }
 
 const styles = StyleSheet.create({
-  titleContainer: {
+  container: {
+    gap: 16,
+  },
+  centerContainer: {
+    alignItems: "center",
+  },
+  rowContainer: {
     flexDirection: "row",
     alignItems: "center",
-    gap: 8,
-  },
-  stepContainer: {
-    gap: 8,
-    marginBottom: 8,
-  },
-  headerImage: {
-    width: "100%",
-    height: 300,
+    gap: 12,
+    justifyContent: "center",
   },
   input: {
-    borderWidth: 1,
     padding: 12,
-    borderRadius: 8,
+    paddingBottom: 8,
+
+    borderRadius: 9,
     width: 150,
+    fontSize: 18,
+    height: 40,
   },
   dropdownButtonStyle: {
     width: 100,
-    height: 50,
-    backgroundColor: inputBackgroundColor,
-    borderRadius: 12,
+    height: 40,
+    borderRadius: 9,
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
@@ -170,20 +177,16 @@ const styles = StyleSheet.create({
   },
   dropdownButtonTxtStyle: {
     flex: 1,
-    fontSize: 18,
-    fontWeight: "500",
+    fontSize: 20,
     color: inputTextColor,
   },
   dropdownButtonArrowStyle: {
-    fontSize: 20,
-  },
-  dropdownButtonIconStyle: {
-    fontSize: 20,
-    marginRight: 8,
+    fontSize: 12,
   },
   dropdownMenuStyle: {
     backgroundColor: inputBackgroundColor,
-    borderRadius: 8,
+    borderRadius: 9,
+    marginTop: -30,
   },
   dropdownItemStyle: {
     width: "100%",
@@ -196,13 +199,8 @@ const styles = StyleSheet.create({
   dropdownItemTxtStyle: {
     flex: 1,
     fontSize: 18,
-    fontWeight: "500",
-  },
-  dropdownItemIconStyle: {
-    fontSize: 28,
-    marginRight: 8,
   },
   dropdownItemSelectedStyle: {
-    backgroundColor: "#bcbfc2",
+    backgroundColor: "#D6D9CE",
   },
 });

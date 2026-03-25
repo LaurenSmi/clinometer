@@ -1,8 +1,11 @@
 import { Accelerometer } from "expo-sensors";
-import React, { useEffect, useState } from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { useEffect, useState } from "react";
 
-export function AccelerometerComponent({ onDataChange }: { onDataChange?: (data: { x: number; y: number; z: number }) => void }) {
+export function AccelerometerComponent({
+  onDataChange,
+}: {
+  onDataChange?: (data: { x: number; y: number; z: number }) => void;
+}) {
   const [data, setData] = useState({
     x: 0,
     y: 0,
@@ -27,21 +30,12 @@ export function AccelerometerComponent({ onDataChange }: { onDataChange?: (data:
     return () => subscription && subscription.remove();
   }, []);
 
-  return (
-    <View>
-      <Text style={styles.text}>Accelerometer Data:</Text>
-      <Text style={styles.text}>X: {data.x.toFixed(2)}</Text>
-      <Text style={styles.text}>Y: {data.y.toFixed(2)}</Text>
-      <Text style={styles.text}>Z: {data.z.toFixed(2)}</Text>
-    </View>
-  );
+  // return (
+  //   <View>
+  //     <Text style={styles.text}>Accelerometer Data:</Text>
+  //     <Text style={styles.text}>X: {data.x.toFixed(2)}</Text>
+  //     <Text style={styles.text}>Y: {data.y.toFixed(2)}</Text>
+  //     <Text style={styles.text}>Z: {data.z.toFixed(2)}</Text>
+  //   </View>
+  // );
 }
-
-const styles = StyleSheet.create({
-  text: {
-    fontSize: 16,
-    marginVertical: 8,
-    fontWeight: "bold",
-    color: "white",
-  },
-});

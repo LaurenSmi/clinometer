@@ -1,3 +1,4 @@
+import * as ScreenOrientation from "expo-screen-orientation";
 export function calcHeight(
   angleTop: number,
   angleBottom: number,
@@ -13,28 +14,32 @@ export function calcHeight(
   return height;
 }
 
-// Convert accelerometer data to tilt angle in radians
-// Assumes phone is held vertically with screen facing user
-// Positive angle = tilted forward/up, Negative angle = tilted backward/down
-export function accelerometerToAngle(accelerometerData: { x: number; y: number; z: number }): number {
-  const { x, y, z } = accelerometerData;
+export function accelerometerToAngle(
+  accelerometerData: { x: number; y: number; z: number },
+  orientation: ScreenOrientation.Orientation,
+): number {
+  let { x, y, z } = accelerometerData;
 
-  // Calculate pitch angle using atan2
-  // For phone held vertically: atan2(y, z) gives forward/backward tilt
-  // Subtract π/2 to convert from gravity vector angle to tilt from horizontal
+  // Adjust axes based on orientation
+  switch (orientation) {
+    case ScreenOrientation.Orientation.LANDSCAPE_LEFT:
+      [x, y] = [y, -x];
+      break;
+
+    case ScreenOrientation.Orientation.LANDSCAPE_RIGHT:
+      [x, y] = [-y, x];
+      break;
+
+    case ScreenOrientation.Orientation.PORTRAIT_DOWN:
+      x = -x;
+      y = -y;
+      break;
+
+    // PORTRAIT_UP → no change
+  }
+
+  // Now compute angle consistently
   const pitchAngle = Math.atan2(y, z) - Math.PI / 2;
 
   return pitchAngle;
-}
-
-// Alternative calculation if phone is held differently
-// Use this if the above doesn't give expected results
-export function accelerometerToAngleAlternative(accelerometerData: { x: number; y: number; z: number }): number {
-  const { x, y, z } = accelerometerData;
-
-  // Calculate tilt from horizontal using the Y and Z components
-  // This gives angle from horizontal plane
-  const tiltAngle = Math.atan2(y, Math.sqrt(x * x + z * z));
-
-  return tiltAngle;
 }

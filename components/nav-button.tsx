@@ -1,5 +1,4 @@
-import { Button } from "@react-navigation/elements";
-import { StyleSheet } from "react-native";
+import { Text as RText, StyleSheet, TouchableOpacity } from "react-native";
 
 interface NavButtonProps {
   onClick: () => void;
@@ -9,16 +8,16 @@ interface NavButtonProps {
 
 export function NavButton({ onClick, isDisabled, text }: NavButtonProps) {
   return (
-    <Button
+    <TouchableOpacity
       onPress={onClick}
       disabled={isDisabled}
-      color="white"
       style={[styles.button, isDisabled && styles.buttonDisabled]}
     >
-      {text}
-    </Button>
+      <RText style={styles.buttonText}>{text}</RText>
+    </TouchableOpacity>
   );
 }
+``;
 
 const styles = StyleSheet.create({
   button: {
@@ -29,9 +28,14 @@ const styles = StyleSheet.create({
     marginTop: 20,
     alignItems: "center",
     justifyContent: "center",
-    width: 150,
+    width: 220,
   },
   buttonDisabled: {
     opacity: 0.6,
+  },
+  buttonText: {
+    fontFamily: "DMSans_400Regular",
+    fontSize: 30,
+    color: "white",
   },
 });

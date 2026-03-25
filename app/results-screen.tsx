@@ -1,5 +1,5 @@
 import { Image } from "expo-image";
-import { StyleSheet } from "react-native";
+import { StyleSheet, View } from "react-native";
 
 import BasicView from "@/components/basic-view";
 import { NavButton } from "@/components/nav-button";
@@ -32,31 +32,39 @@ export default function HomeScreen() {
 
   return (
     <BasicView>
-      <ThemedText>
+      <View style={{ gap: 12 }} />
+      <ThemedText style={{ textAlign: "center" }}>
         Angle to the top of tree: {angleToTop.toFixed(2)}°
       </ThemedText>
-      <ThemedText>
+      <ThemedText style={{ textAlign: "center" }}>
         Angle to the bottom of tree: {angleToBottom.toFixed(2)}°
       </ThemedText>
-      <ThemedText>
+      <ThemedText style={{ textAlign: "center" }}>
         Distance to tree: {distance.toFixed(2)} {units}
       </ThemedText>
 
-      <ThemedText>
-        Height = {distance.toFixed(2)} * (tan({angleToTop.toFixed(2)}) + tan(
-        {(angleToBottom * -1).toFixed(2)})) {units}
-      </ThemedText>
-
       <Image
-        source={require("@/assets/images/final-angle-image.png")}
+        source={require("@/assets/images/results.png")}
         style={styles.headerImage}
+        contentFit="contain"
       />
 
-      <ThemedText type="title">
-        Calculated Height: {height.toFixed(2)} {units}{" "}
+      <ThemedText style={{ textAlign: "center" }}>
+        Height = {distance.toFixed(2)} × (tan({angleToTop.toFixed(2)}) − tan(
+        {angleToBottom.toFixed(2)})) {units}
       </ThemedText>
+      <View style={{ gap: 12 }} />
 
-      <NavButton onClick={handleDone} text="Done" />
+      <View style={styles.resultsContainer}>
+        <ThemedText type="subtitle">Height of the tree:</ThemedText>
+        <ThemedText type="subtitleBold">
+          {height.toFixed(2)} {units}
+        </ThemedText>
+      </View>
+
+      <View style={styles.titleContainer}>
+        <NavButton onClick={handleDone} text="Done" />
+      </View>
     </BasicView>
   );
 }
@@ -66,6 +74,16 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     gap: 8,
+    justifyContent: "center",
+    marginTop: 16,
+  },
+  resultsContainer: {
+    flexDirection: "column",
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: "#F7FBEE",
+    borderRadius: 19,
+    padding: 8,
   },
   stepContainer: {
     gap: 8,
@@ -73,6 +91,7 @@ const styles = StyleSheet.create({
   },
   headerImage: {
     width: "100%",
-    height: 300,
+    height: undefined,
+    aspectRatio: 1.5,
   },
 });

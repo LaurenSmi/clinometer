@@ -78,7 +78,7 @@ const styles = StyleSheet.create({
   },
   buttonContainer: {
     position: "absolute",
-    bottom: 64,
+    bottom: 16,
     flexDirection: "row",
     backgroundColor: "transparent",
     width: "100%",
@@ -89,8 +89,8 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   text: {
-    fontSize: 24,
-    fontWeight: "bold",
     color: "white",
+    fontFamily: "DMSans_Regular400",
+    fontSize: 20,
   },
 });

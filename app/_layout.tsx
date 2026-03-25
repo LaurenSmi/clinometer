@@ -14,7 +14,18 @@ import { useColorScheme } from "@/hooks/use-color-scheme";
 import { useState } from "react";
 import AngleContext from "./contexts/angleContext";
 
+import {
+  DMSans_400Regular,
+  DMSans_700Bold,
+  useFonts,
+} from "@expo-google-fonts/dm-sans";
+
 export default function RootLayout() {
+  const [loaded] = useFonts({
+    DMSans_400Regular,
+    DMSans_700Bold,
+  });
+
   const colorScheme = useColorScheme();
   const unitState = useState<"m" | "ft">("m");
   const distanceState = useState<number>(0);

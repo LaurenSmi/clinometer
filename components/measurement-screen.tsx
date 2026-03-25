@@ -1,10 +1,9 @@
-import { StyleSheet } from "react-native";
+import { Dimensions, StyleSheet, View } from "react-native";
 
-import { AccelerometerComponent } from "@/components/accelerometer-component";
 import { Camera } from "@/components/camera";
 import { ThemedText } from "@/components/themed-text";
-import { ThemedView } from "@/components/themed-view";
-import { useState } from "react";
+import * as ScreenOrientation from "expo-screen-orientation";
+import React, { useEffect, useState } from "react";
 import BasicView from "./basic-view";
 import { NavButton } from "./nav-button";
 
@@ -12,29 +11,47 @@ export default function MeasurementScreen({
   text,
   onCapture,
 }: {
-  text: string;
+  text: React.ReactNode;
   onCapture: (accelerometerData: { x: number; y: number; z: number }) => void;
 }) {
+  const [orientation, setOrientation] = useState(
+    ScreenOrientation.Orientation.PORTRAIT_UP,
+  );
+
+  useEffect(() => {
+    ScreenOrientation.getOrientationAsync().then(setOrientation);
+
+    const sub = ScreenOrientation.addOrientationChangeListener((event) => {
+      setOrientation(event.orientationInfo.orientation);
+    });
+
+    return () => ScreenOrientation.removeOrientationChangeListener(sub);
+  }, []);
+
+  const screenHeight = Dimensions.get("window").height;
+
   const [currentAccelerometerData, setCurrentAccelerometerData] = useState({
     x: 0,
     y: 0,
     z: 0,
   });
+
   return (
     <BasicView>
-      <ThemedView style={styles.textContainer}>
-        <ThemedText>{text}</ThemedText>
-      </ThemedView>
+      <View style={styles.textContainer}>
+        <ThemedText style={{ textAlign: "center" }}>{text}</ThemedText>
+      </View>
 
-      <ThemedView style={{ aspectRatio: 1, width: "100%" }}>
+      <View style={{ width: "100%", height: screenHeight * 0.6 }}>
         <Camera />
-        <AccelerometerComponent onDataChange={setCurrentAccelerometerData} />
-      </ThemedView>
+      </View>
 
-      <NavButton
-        onClick={() => onCapture(currentAccelerometerData)}
-        text="Capture"
-      />
+      <View style={styles.titleContainer}>
+        <NavButton
+          onClick={() => onCapture(currentAccelerometerData)}
+          text="Capture"
+        />
+      </View>
     </BasicView>
   );
 }
@@ -43,21 +60,9 @@ const styles = StyleSheet.create({
   titleContainer: {
     flexDirection: "row",
     alignItems: "center",
-    gap: 8,
-  },
-  stepContainer: {
-    gap: 8,
-    marginBottom: 8,
-  },
-  reactLogo: {
-    height: 178,
-    width: 290,
-    bottom: 0,
-    left: 0,
-    position: "absolute",
+    justifyContent: "center",
   },
   textContainer: {
-    padding: 16,
-    gap: 8,
+    padding: 10,
   },
 });

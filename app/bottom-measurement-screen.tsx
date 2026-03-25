@@ -1,11 +1,14 @@
 import MeasurementScreen from "@/components/measurement-screen";
+import { Fonts } from "@/constants/theme";
 import { accelerometerToAngle } from "@/hooks/calc-height";
 import { useRouter } from "expo-router";
+import type { Orientation } from "expo-screen-orientation";
 import { useContext, useEffect } from "react";
+import { Text as RText } from "react-native";
 import AngleContext from "./contexts/angleContext";
 import StepContext from "./contexts/stepContext";
 
-export default function BottomMeasurementScreen() {
+export default function BottomMeasurementScreen(orientation: Orientation) {
   const [, setAngles] = useContext(AngleContext)!;
   const [, setStep] = useContext(StepContext)!;
   const router = useRouter();
@@ -19,7 +22,7 @@ export default function BottomMeasurementScreen() {
     y: number;
     z: number;
   }) => {
-    const angle = accelerometerToAngle(accelerometerData);
+    const angle = accelerometerToAngle(accelerometerData, orientation);
     setAngles((prev) => ({ ...prev, angleToBottom: angle }));
     router.push("/results-screen");
   };
@@ -27,7 +30,13 @@ export default function BottomMeasurementScreen() {
   return (
     <>
       <MeasurementScreen
-        text="Tilt your phone to point the cross hair to the base of the tree and press Capture."
+        text={
+          <>
+            Tilt your phone to point the crosshair at the{" "}
+            <RText style={{ fontFamily: Fonts.bold }}>base</RText> of the tree
+            and press Capture.
+          </>
+        }
         onCapture={handleCapture}
       />
     </>
