@@ -34,8 +34,6 @@ export function accelerometerToAngle(
       x = -x;
       y = -y;
       break;
-
-    // PORTRAIT_UP → no change
   }
 
   // Now compute angle consistently

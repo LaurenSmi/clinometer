@@ -1,9 +1,9 @@
-import { Dimensions, StyleSheet, View } from "react-native";
-
 import { Camera } from "@/components/camera";
 import { ThemedText } from "@/components/themed-text";
 import * as ScreenOrientation from "expo-screen-orientation";
 import React, { useEffect, useState } from "react";
+import { Dimensions, StyleSheet, View } from "react-native";
+import { useAccelerometer } from "../hooks/use-accelerometer";
 import BasicView from "./basic-view";
 import { NavButton } from "./nav-button";
 
@@ -18,6 +18,15 @@ export default function MeasurementScreen({
     ScreenOrientation.Orientation.PORTRAIT_UP,
   );
 
+  const accelerometerData = useAccelerometer();
+
+  const [currentAccelerometerData, setCurrentAccelerometerData] =
+    useState(accelerometerData);
+
+  useEffect(() => {
+    setCurrentAccelerometerData(accelerometerData);
+  }, [accelerometerData]);
+
   useEffect(() => {
     ScreenOrientation.getOrientationAsync().then(setOrientation);
 
@@ -29,12 +38,6 @@ export default function MeasurementScreen({
   }, []);
 
   const screenHeight = Dimensions.get("window").height;
-
-  const [currentAccelerometerData, setCurrentAccelerometerData] = useState({
-    x: 0,
-    y: 0,
-    z: 0,
-  });
 
   return (
     <BasicView>

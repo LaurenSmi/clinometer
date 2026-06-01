@@ -23,12 +23,11 @@ const styles = StyleSheet.create({
   button: {
     backgroundColor: "#88A974",
     paddingVertical: 12,
-    paddingHorizontal: 20,
     borderRadius: 13,
     marginTop: 20,
     alignItems: "center",
     justifyContent: "center",
-    width: 220,
+    minWidth: 220,
   },
   buttonDisabled: {
     opacity: 0.6,
